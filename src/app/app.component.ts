@@ -20,7 +20,16 @@ export class AppComponent {
     indexAxis: 'y',
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
-      x: {},
+      x: {
+        display: false,
+        ticks: {
+          font: {
+            family: 'Helvetica regular',
+            size: 16,
+            style: 'normal',
+          }
+        }
+      },
       y: {
         // min: 10,
       },
