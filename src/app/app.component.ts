@@ -27,14 +27,17 @@ export class AppComponent {
             family: 'Helvetica regular',
             size: 16,
             style: 'normal',
-          }
-        }
+          },
+        },
       },
       y: {
         // min: 10,
       },
     },
     plugins: {
+      tooltip: {
+        enabled: false,
+      },
       legend: {
         display: false,
       },
@@ -43,9 +46,38 @@ export class AppComponent {
         align: 'end',
       },
     },
-    onHover: (chartEvent,) => {
-
-    }
+    onHover: (chartEvent, elements, chart) => {
+      if (
+        (chartEvent.native as any).toElement &&
+        (chartEvent.native as any).toElement.attributes.style
+      ) {
+        if (elements[0]) {
+          (chartEvent.native as any).toElement.attributes.style.nodeValue = (
+            chartEvent.native as any
+          ).toElement.attributes.style.nodeValue.replace(
+            'cursor: default;',
+            'cursor: pointer;'
+          );
+          if (
+            (
+              chartEvent.native as any
+            ).toElement.attributes.style.nodeValue.indexOf(
+              'cursor: pointer;'
+            ) === -1
+          ) {
+            (chartEvent.native as any).toElement.attributes.style.nodeValue +=
+              'cursor: pointer;';
+          }
+        } else {
+          (chartEvent.native as any).toElement.attributes.style.nodeValue = (
+            chartEvent.native as any
+          ).toElement.attributes.style.nodeValue.replace(
+            'cursor: pointer;',
+            'cursor: default;'
+          );
+        }
+      }
+    },
   };
   public barChartType: ChartType = 'bar';
   public barChartPlugins = [DataLabelsPlugin];
@@ -57,6 +89,7 @@ export class AppComponent {
         data: [65, 59, 80, 81, 56, 55, 40],
         label: 'Series A',
         backgroundColor: ['#b0b0b0'],
+        hoverBackgroundColor: ['#9e9e9e'],
       },
       // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
     ],
